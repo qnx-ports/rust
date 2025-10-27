@@ -19,7 +19,8 @@ use crate::sys::pal::linux::pidfd::PidFd;
 use crate::{fmt, mem, sys};
 
 cfg_if::cfg_if! {
-    if #[cfg(target_os = "nto")] {
+    // This workaround is only needed for QNX 7.0 and 7.1. The bug should have been fixed in 8.0
+    if #[cfg(any(target_env = "nto70", target_env = "nto71"))] {
         use crate::thread;
         use libc::{c_char, posix_spawn_file_actions_t, posix_spawnattr_t};
         use crate::time::Duration;
@@ -181,7 +182,12 @@ impl Command {
 
     // Attempts to fork the process. If successful, returns Ok((0, -1))
     // in the child, and Ok((child_pid, -1)) in the parent.
-    #[cfg(not(any(target_os = "watchos", target_os = "tvos", target_os = "nto")))]
+    #[cfg(not(any(
+        target_os = "watchos",
+        target_os = "tvos",
+        target_env = "nto70",
+        target_env = "nto71"
+    )))]
     unsafe fn do_fork(&mut self) -> Result<pid_t, io::Error> {
         cvt(libc::fork())
     }
@@ -190,7 +196,8 @@ impl Command {
     // or closed a file descriptor while the fork() was occurring".
     // Documentation says "... or try calling fork() again". This is what we do here.
     // See also https://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.lib_ref/topic/f/fork.html
-    #[cfg(target_os = "nto")]
+    // This workaround is only needed for QNX 7.0 and 7.1. The bug should have been fixed in 8.0
+    #[cfg(any(target_env = "nto70", target_env = "nto71"))]
     unsafe fn do_fork(&mut self) -> Result<pid_t, io::Error> {
         use crate::sys::os::errno;
 
@@ -549,7 +556,7 @@ impl Command {
         // or closed a file descriptor while the posix_spawn() was occurring".
         // Documentation says "... or try calling posix_spawn() again". This is what we do here.
         // See also http://www.qnx.com/developers/docs/7.1/#com.qnx.doc.neutrino.lib_ref/topic/p/posix_spawn.html
-        #[cfg(target_os = "nto")]
+        #[cfg(any(target_env = "nto70", target_env = "nto71"))]
         unsafe fn retrying_libc_posix_spawnp(
             pid: *mut pid_t,
             file: *const c_char,
@@ -761,9 +768,9 @@ impl Command {
             let _env_lock = sys::env::env_read_lock();
             let envp = envp.map(|c| c.as_ptr()).unwrap_or_else(|| *sys::env::environ() as *const _);
 
-            #[cfg(not(target_os = "nto"))]
+            #[cfg(not(any(target_env = "nto70", target_env = "nto71")))]
             let spawn_fn = libc::posix_spawnp;
-            #[cfg(target_os = "nto")]
+            #[cfg(any(target_env = "nto70", target_env = "nto71"))]
             let spawn_fn = retrying_libc_posix_spawnp;
 
             #[cfg(target_os = "linux")]
@@ -816,7 +823,7 @@ impl Command {
                 envp as *const _,
             );
 
-            #[cfg(target_os = "nto")]
+            #[cfg(any(target_env = "nto70", target_env = "nto71"))]
             let spawn_res = spawn_res?;
 
             cvt_nz(spawn_res)?;
