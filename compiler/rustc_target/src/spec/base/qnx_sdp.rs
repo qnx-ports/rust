@@ -10,7 +10,7 @@ pub(crate) fn opts() -> TargetOptions {
         families: cvs!["unix"],
         has_rpath: true,
         has_thread_local: false,
-        linker: Some("qcc".into()),
+        linker: Some("clang".into()),
         os: Os::Nto,
         // We want backtraces to work by default and they rely on unwind tables
         // (regardless of `-C panic` strategy).
@@ -28,7 +28,7 @@ pub(crate) fn meta() -> TargetMetadata {
 
 pub(crate) fn aarch64() -> Target {
     Target {
-        llvm_target: "aarch64-unknown-unknown".into(),
+        llvm_target: "aarch64-unknown-qnx".into(),
         metadata: meta(),
         pointer_width: 64,
         // from: https://llvm.org/docs/LangRef.html#data-layout
@@ -52,7 +52,7 @@ pub(crate) fn aarch64() -> Target {
 
 pub(crate) fn x86_64() -> Target {
     Target {
-        llvm_target: "x86_64-pc-unknown".into(),
+        llvm_target: "x86_64-pc-qnx".into(),
         metadata: meta(),
         pointer_width: 64,
         data_layout:
@@ -69,20 +69,22 @@ pub(crate) fn x86_64() -> Target {
 }
 
 pub(crate) fn pre_link_args(api_var: ApiVariant, arch: Arch) -> LinkArgs {
+    /*
     let (qcc_arg, arch_lib_dir) = match arch {
-        Arch::Aarch64 => ("-Vgcc_ntoaarch64le_cxx", "aarch64le"),
+        Arch::Aarch64 => ("", "aarch64"),
         Arch::I586 => {
-            ("-Vgcc_ntox86_cxx", "notSupportedByQnx_compiler/rustc_target/src/spec/base/nto_qnx.rs")
+            ("", "bruh")
         }
-        Arch::X86_64 => ("-Vgcc_ntox86_64_cxx", "x86_64"),
+        Arch::X86_64 => ("", "x86_64"),
     };
+    */
     match api_var {
         ApiVariant::Default => {
-            TargetOptions::link_args(LinkerFlavor::Gnu(Cc::Yes, Lld::No), &[qcc_arg])
+            TargetOptions::link_args(LinkerFlavor::Gnu(Cc::Yes, Lld::No), &[])
         }
         ApiVariant::IoSock => TargetOptions::link_args(
             LinkerFlavor::Gnu(Cc::Yes, Lld::No),
-            &[qcc_arg, get_iosock_param(arch_lib_dir)],
+            &[],
         ),
     }
 }

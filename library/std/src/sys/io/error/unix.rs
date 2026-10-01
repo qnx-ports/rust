@@ -8,7 +8,8 @@ unsafe extern "C" {
         target_os = "dragonfly",
         target_os = "vxworks",
         target_os = "rtems",
-        target_os = "wasi"
+        target_os = "wasi",
+        target_os = "qnx"
     )))]
     #[cfg_attr(
         any(
@@ -34,15 +35,20 @@ unsafe extern "C" {
         link_name = "__errno"
     )]
     #[cfg_attr(any(target_os = "solaris", target_os = "illumos"), link_name = "___errno")]
-    #[cfg_attr(target_os = "nto", link_name = "__get_errno_ptr")]
-    #[cfg_attr(target_os = "qnx", link_name = "__get_errno_ptr")]
     #[cfg_attr(any(target_os = "freebsd", target_vendor = "apple"), link_name = "__error")]
     #[cfg_attr(target_os = "haiku", link_name = "_errnop")]
     #[cfg_attr(target_os = "aix", link_name = "_Errno")]
     // SAFETY: this will always return the same pointer on a given thread.
     #[unsafe(ffi_const)]
     pub safe fn errno_location() -> *mut c_int;
+
 }
+
+#[cfg(any(target_os = "qnx"))]
+pub unsafe fn errno_location() -> *mut c_int {
+    unsafe { libc::__get_errno_ptr() }
+}
+
 
 /// Returns the platform-specific value of errno
 #[cfg(not(any(

@@ -92,5 +92,14 @@ codegen-units = 1
 
 # If you want to use a crate with local modifications, you can set a path or git dependency here.
 # For git dependencies, also add your source to ALLOWED_SOURCES in src/tools/tidy/src/extdeps.rs.
-#[patch.crates-io]
-
+[patch.crates-io]
+cc = { git = "https://github.com/qnx-ports/cc-rs", branch = "qnx-1.2.16" }
+getrandom = { git = "https://github.com/qnx-ports/getrandom-rs", branch = "qnx-0.4.3" }
+getrandom_034 = { package = "getrandom", git = "https://github.com/qnx-ports/getrandom-rs", branch = "qnx-0.3.4" }
+rustix = { git = "https://github.com/qnx-ports/rustix", branch = "qnx-1.1.4" }
+libloading = { git = "https://github.com/qnx-ports/rust_libloading", branch = "qnx-0.9.0" }
+libloading_089 = { package = "libloading", git = "https://github.com/qnx-ports/rust_libloading", branch = "qnx-0.8.9" }
+nix = { git = "https://github.com/qnx-ports/nix", branch = "qnx-0.31.3" }
+nix_0_30_1 = { package = "nix", git = "https://github.com/qnx-ports/nix", branch = "qnx-0.30.1" }
+ctrlc = { git = "https://github.com/qnx-ports/rust-ctrlc", branch = "qnx-3.5.2" }
+errno = { git = "https://github.com/qnx-ports/rust-errno", branch = "qnx-0.3.13" }
