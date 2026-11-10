@@ -1423,13 +1423,11 @@ dependencies = [
 
 [[package]]
 name = "filetime"
-version = "0.2.27"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f98844151eee8917efc50bd9e8318cb963ae8b297431495d3f758616ea5c57db"
+version = "0.2.29"
+source = "git+https://github.com/qnx-ports/filetime?branch=qnx-0.2.29#8a0d020ae97e9f988bf235fe0455cbd8405cc46e"
 dependencies = [
  "cfg-if",
  "libc",
- "libredox",
 ]
 
 [[package]]
@@ -2334,7 +2332,6 @@ checksum = "416f7e718bdb06000964960ffa43b4335ad4012ae8b99060261aa4a8088d5ccb"
 dependencies = [
  "bitflags",
  "libc",
- "redox_syscall",
 ]
 
 [[package]]
@@ -5345,6 +5342,7 @@ dependencies = [
 name = "shim_utils"
 version = "0.0.0"
 dependencies = [
+ "libc",
  "tempfile",
 ]
 

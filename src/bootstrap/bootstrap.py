@@ -313,7 +313,7 @@ def default_build_triple(verbose):
     kernel, cputype, processor = uname.decode(default_encoding).split(maxsplit=2)
 
     # ON NetBSD, use `uname -p` to set the CPU type
-    if kernel == "NetBSD":
+    if kernel == "NetBSD" or kernel == "QNX":
         cputype = (
             subprocess.check_output(["uname", "-p"]).strip().decode(default_encoding)
         )
@@ -386,6 +386,11 @@ def default_build_triple(verbose):
         # rust on AIX. For above reasons, kerneltype_mapper and cputype_mapper
         # are not used to infer AIX's triple.
         return "powerpc64-ibm-aix"
+    elif kernel == "QNX":
+        if cputype == "x86_64":
+            kernel = "pc-qnx"
+        else:
+            kernel = "unknown-qnx"
     else:
         err = "unknown OS type: {}".format(kernel)
         sys.exit(err)
@@ -398,6 +403,7 @@ def default_build_triple(verbose):
         "BePC": "i686",
         "aarch64": "aarch64",
         "aarch64eb": "aarch64",
+        "aarch64le": "aarch64",
         "amd64": "x86_64",
         "arm64": "aarch64",
         "i386": "i686",

@@ -104,3 +104,4 @@ nix = { git = "https://github.com/qnx-ports/nix", branch = "qnx-0.31.3" }
 nix_0_30_1 = { package = "nix", git = "https://github.com/qnx-ports/nix", branch = "qnx-0.30.1" }
 ctrlc = { git = "https://github.com/qnx-ports/rust-ctrlc", branch = "qnx-3.5.2" }
 errno = { git = "https://github.com/qnx-ports/rust-errno", branch = "qnx-0.3.13" }
+filetime = { git = "https://github.com/qnx-ports/filetime", branch = "qnx-0.2.29" }

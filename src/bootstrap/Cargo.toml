@@ -99,3 +99,9 @@ debug = 0
 [profile.dev.package]
 # Only use debuginfo=1 to further reduce compile times.
 bootstrap.debug = 1
+
+[patch.crates-io]
+getrandom_033 = { package = "getrandom", git = "https://github.com/qnx-ports/getrandom-rs", branch = "qnx-0.3.3" }
+libc = { git = "https://github.com/qnx-ports/libc-rs.git", branch = "qnx-0.2.190" }
+rustix = { git = "https://github.com/qnx-ports/rustix", branch = "qnx-1.1.4" }
+filetime = { git = "https://github.com/qnx-ports/filetime", branch = "qnx-0.2.29" }

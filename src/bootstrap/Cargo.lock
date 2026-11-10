@@ -264,13 +264,11 @@ checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
 
 [[package]]
 name = "filetime"
-version = "0.2.27"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f98844151eee8917efc50bd9e8318cb963ae8b297431495d3f758616ea5c57db"
+version = "0.2.29"
+source = "git+https://github.com/qnx-ports/filetime?branch=qnx-0.2.29#8a0d020ae97e9f988bf235fe0455cbd8405cc46e"
 dependencies = [
  "cfg-if",
  "libc",
- "libredox",
 ]
 
 [[package]]
@@ -291,9 +289,8 @@ dependencies = [
 
 [[package]]
 name = "getrandom"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "73fea8450eea4bac3940448fb7ae50d91f034f941199fcd9d909a5a07aa455f0"
+version = "0.3.3"
+source = "git+https://github.com/qnx-ports/getrandom-rs?branch=qnx-0.3.3#329541415e8bf550d46e175fa1136e43670544c2"
 dependencies = [
  "cfg-if",
  "libc",
@@ -381,20 +378,8 @@ checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
 
 [[package]]
 name = "libc"
-version = "0.2.186"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66"
-
-[[package]]
-name = "libredox"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0ff37bd590ca25063e35af745c343cb7a0271906fb7b37e4813e8f79f00268d"
-dependencies = [
- "bitflags",
- "libc",
- "redox_syscall",
-]
+version = "0.2.190"
+source = "git+https://github.com/qnx-ports/libc-rs.git?branch=qnx-0.2.190#0a64510a034d7e91e7fa53deb27d198b10844078"
 
 [[package]]
 name = "linux-raw-sys"
@@ -552,15 +537,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "74765f6d916ee2faa39bc8e68e4f3ed8949b48cccdac59983d287a7cb71ce9c5"
 
 [[package]]
-name = "redox_syscall"
-version = "0.5.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9b6dfecf2c74bce2466cabf93f6664d6998a69eb21e39f4207930065b27b771f"
-dependencies = [
- "bitflags",
-]
-
-[[package]]
 name = "regex-automata"
 version = "0.4.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -580,8 +556,7 @@ checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 [[package]]
 name = "rustix"
 version = "1.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6fe4565b9518b83ef4f91bb47ce29620ca828bd32cb7e408f0062e9930ba190"
+source = "git+https://github.com/qnx-ports/rustix?branch=qnx-1.1.4#50337c222ce9301bf1e5fd6688a5b6f5c16e286a"
 dependencies = [
  "bitflags",
  "errno",
@@ -673,6 +648,7 @@ dependencies = [
 name = "shim_utils"
 version = "0.0.0"
 dependencies = [
+ "libc",
  "tempfile",
 ]
 

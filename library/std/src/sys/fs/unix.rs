@@ -1331,6 +1331,7 @@ impl File {
                 target_os = "illumos",
                 target_os = "aix",
                 target_os = "android",
+                target_os = "qnx",
                 target_vendor = "apple",
             ) => {
                 cvt(unsafe { libc::flock(self.as_raw_fd(), libc::LOCK_EX) })?;
@@ -1355,6 +1356,7 @@ impl File {
                 target_os = "illumos",
                 target_os = "aix",
                 target_os = "android",
+                target_os = "qnx",
                 target_vendor = "apple",
             ) => {
                 cvt(unsafe { libc::flock(self.as_raw_fd(), libc::LOCK_SH) })?;
@@ -1379,6 +1381,7 @@ impl File {
                 target_os = "illumos",
                 target_os = "aix",
                 target_os = "android",
+                target_os = "qnx",
                 target_vendor = "apple",
             ) => {
                 let result = cvt(unsafe { libc::flock(self.as_raw_fd(), libc::LOCK_EX | libc::LOCK_NB) });
@@ -1414,6 +1417,7 @@ impl File {
                 target_os = "illumos",
                 target_os = "aix",
                 target_os = "android",
+                target_os = "qnx",
                 target_vendor = "apple",
             ) => {
                 let result = cvt(unsafe { libc::flock(self.as_raw_fd(), libc::LOCK_SH | libc::LOCK_NB) });
@@ -1449,6 +1453,7 @@ impl File {
                 target_os = "illumos",
                 target_os = "aix",
                 target_os = "android",
+                target_os = "qnx",
                 target_vendor = "apple",
             ) => {
                 cvt(unsafe { libc::flock(self.as_raw_fd(), libc::LOCK_UN) })?;
