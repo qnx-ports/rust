@@ -70,15 +70,53 @@ impl ArgFileCommand {
     pub fn build(mut self) -> std::io::Result<(Command, Option<NamedTempFile>)> {
         // On Windows there is a hard limit of ~32KB, so we cut off at 30KB to
         // give some buffer just incase.
+
+        let threshold: usize;
+        let total_arg_len: usize;
         #[cfg(windows)]
-        let threshold: usize = 30 * 1024;
+        {
+            threshold = (30 * 1024);
+            total_arg_len = self.args.iter().map(|a| a.len() + 1).sum();
+        }
         // On unix the limit is defined by ARG_MAX. If its not explicitly set we set it to 1MB
         // which is fairly large but lower than the ~2MB that it defaults to on most systems.
         #[cfg(unix)]
-        let threshold: usize =
-            std::env::var("ARG_MAX").ok().and_then(|v| v.parse().ok()).unwrap_or(1024 * 1024);
+        {
+            let ptr_size = size_of::<usize>();
 
-        let total_arg_len: usize = self.args.iter().map(|a| a.len() + 1).sum();
+            let command_size = self.command.get_program()
+                .as_encoded_bytes()
+                .len()
+                .saturating_add(1) // nul
+                .saturating_add(ptr_size);
+
+            let arg_size = self.args.iter().fold(0usize, |acc, a| {
+                let arg = a.as_encoded_bytes().len();
+                let nul = 1;
+                acc.saturating_add(arg).saturating_add(nul).saturating_add(ptr_size)
+            });
+
+            let envs_size = std::env::vars_os().fold(0usize, |acc, (k, v)| {
+                let k = k.as_encoded_bytes().len();
+                let eq = 1;
+                let v = v.as_encoded_bytes().len();
+                let nul = 1;
+                acc.saturating_add(k)
+                    .saturating_add(eq)
+                    .saturating_add(v)
+                    .saturating_add(nul)
+                    .saturating_add(ptr_size)
+            });
+
+            total_arg_len = arg_size + envs_size + command_size;
+
+            threshold = match unsafe { libc::sysconf(libc::_SC_ARG_MAX) } {
+                -1 => 1024 * 1024, // 1MB
+                max => max as usize,
+            };
+
+        }
+
         if total_arg_len <= threshold {
             self.command.args(self.args);
             return Ok((self.command, None));

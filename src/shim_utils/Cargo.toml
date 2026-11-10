@@ -7,5 +7,6 @@ edition = "2024"
 # (and some other tools), so try to avoid dependencies that are slow to build.
 [dependencies]
 # tidy-alphabetical-start
+libc = "0.2"
 tempfile = "3.23.0"
 # tidy-alphabetical-end
